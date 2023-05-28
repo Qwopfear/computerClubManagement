@@ -21,5 +21,5 @@ public class Club {
     private String city;
     private int maxSize;
     @DBRef
-    private List<GamingEquipment> gamingEquipments = new ArrayList<>();
+    private List<GamingEquipment> gamingEquipments;
 }
