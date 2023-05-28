@@ -10,15 +10,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: rootuser
       MONGO_INITDB_ROOT_PASSWORD: rootpass
+      MONGO_INITDB_DATABASE: admin
+      MONGO_INITDB_USERNAME: rootuser
+      MONGO_INITDB_PASSWORD: rootpass
+    command: mongod --auth
 
-  computer-club-management:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    restart: always
-    ports:
-      - 8080:8080
-    depends_on:
-      - mongodb
-    environment:
-      SPRING_DATA_MONGODB_URI: mongodb://root:example@mongodb:27017/mydatabase
