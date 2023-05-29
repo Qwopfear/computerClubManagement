@@ -16,10 +16,18 @@ import java.util.List;
 public class ClubController {
 
     private final ClubService clubService;
-    @GetMapping("/")
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<ClubResponse> getAllClubs(){
         return clubService.findAll();
+    }
+
+    @GetMapping("/")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ClubResponse> getClubsByCity(
+            @RequestParam String city
+    ){
+        return clubService.findAllByCity(city);
     }
 
     @PostMapping("/")
@@ -38,5 +46,14 @@ public class ClubController {
             @RequestBody List<GamingEquipmentRequest> gamingEquipmentRequest
             ) {
         clubService.addEquipment(clubName,city,gamingEquipmentRequest);
+    }
+
+    @DeleteMapping("/")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteClub(
+            @RequestParam String clubName,
+            @RequestParam String city
+    ) {
+        clubService.delete(clubName,city);
     }
 }

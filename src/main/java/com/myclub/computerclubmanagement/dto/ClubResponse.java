@@ -10,7 +10,11 @@ import java.util.List;
 @Builder
 public class ClubResponse {
     private String name;
-    private int maxSize;
-    private City city;
+    private Integer maxSize;
+    private String city;
+    private Integer currentSize;
+    private Integer maxCapacity;
+    private Integer currentCapacity;
     private List<GamingEquipmentResponse> gamingEquipmentResponseList;
+
 }

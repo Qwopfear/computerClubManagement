@@ -18,8 +18,13 @@ public class Club {
     @Id
     private String id;
     private String name;
-    private String city;
-    private int maxSize;
+    private City city;
+    private Integer maxSize;
+
+    private Integer maxCapacity;
+    private Integer currentCapacity;
     @DBRef
     private List<GamingEquipment> gamingEquipments;
+
+
 }

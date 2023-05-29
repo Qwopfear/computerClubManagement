@@ -14,8 +14,8 @@ public class EquipmentService {
 
     private final EquipmentRepository equipmentRepository;
 
-    public GamingEquipment save(GamingEquipmentRequest gamingEquipment,Club club) {
-       return equipmentRepository.save(mapDtoToEqu(gamingEquipment,club));
+    public GamingEquipment save(GamingEquipmentRequest gamingEquipment,Club club , int index) {
+       return equipmentRepository.save(mapDtoToEqu(gamingEquipment,club, index));
     }
 
     public GamingEquipmentResponse mapEquToDto(GamingEquipment el) {
@@ -35,12 +35,12 @@ public class EquipmentService {
                 .build();
     }
 
-    public GamingEquipment mapDtoToEqu(GamingEquipmentRequest gamingEquipmentRequest,Club club) {
+    public GamingEquipment mapDtoToEqu(GamingEquipmentRequest gamingEquipmentRequest,Club club, int index) {
         return GamingEquipment.builder()
                 .type(gamingEquipmentRequest.getType())
                 .costPerHouse(gamingEquipmentRequest.getCostPerHouse())
                 .isAvailable(gamingEquipmentRequest.isAvailable())
-                .localNumber(club.getGamingEquipments().size())
+                .localNumber(club.getGamingEquipments().size() + index)
                 .club(club)
                 .build();
     }

@@ -8,12 +8,14 @@ import com.myclub.computerclubmanagement.model.club.Club;
 import com.myclub.computerclubmanagement.model.gamingEquipment.GamingEquipment;
 import com.myclub.computerclubmanagement.repository.ClubRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ClubService {
@@ -25,6 +27,12 @@ public class ClubService {
         return clubRepository.findAll().stream().map(this::mapClubToDto).toList();
     }
 
+    public List<ClubResponse> findAllByCity (String city){
+        return clubRepository.findAll().stream()
+                .filter(club -> club.getCity().equals(City.valueOf(city.toUpperCase())))
+                .map(this::mapClubToDto)
+                .toList();
+    }
     public void save(ClubRequest clubRequest) {
         clubRepository.insert(mapDtoToClub(clubRequest));
     }
@@ -46,9 +54,9 @@ public class ClubService {
                 throw new IllegalStateException("");
             }
             List<GamingEquipment> newEqu = new ArrayList<>(club.getGamingEquipments());
-            newEqu.addAll(gamingEquipmentRequest.stream()
-                    .map(el -> equipmentService.save(el,club))
-                    .toList());
+            for (int i = 0; i < gamingEquipmentRequest.size(); i++) {
+                newEqu.add(equipmentService.save(gamingEquipmentRequest.get(i),club,i));
+            }
             club.setGamingEquipments(newEqu);
             clubRepository.save(club);
         }
@@ -59,8 +67,11 @@ public class ClubService {
     private ClubResponse mapClubToDto(Club club) {
         return ClubResponse.builder()
                 .name(club.getName())
-                .city(City.valueOf(club.getCity()))
+                .city(club.getCity().name().toUpperCase())
                 .maxSize(club.getMaxSize())
+                .maxCapacity(club.getMaxSize())
+                .currentCapacity(club.getCurrentCapacity() == null ? 0 : club.getCurrentCapacity())
+                .currentSize(club.getGamingEquipments() == null ? 0 : club.getGamingEquipments().size())
                 .gamingEquipmentResponseList(
                         club.getGamingEquipments() == null ? null :
                         club.getGamingEquipments().stream()
@@ -76,7 +87,26 @@ public class ClubService {
         return Club.builder()
                 .name(clubRequest.getName())
                 .maxSize(clubRequest.getMaxSize())
-                .city(String.valueOf(clubRequest.getCity()))
+                .maxCapacity(clubRequest.getMaxSize())
+                .currentCapacity(0)
+                .city(City.valueOf(clubRequest.getCity().toUpperCase()))
+                .maxCapacity(clubRequest.getMaxSize())
+                .currentCapacity(0)
                 .build();
+    }
+
+    public void delete(String clubName, String city) {
+        Optional<Club> optionalClub = clubRepository.findAll().stream()
+                .filter(club -> club.getName().equals(clubName))
+                .filter(club -> club.getCity().name().equalsIgnoreCase(city))
+                .findFirst();
+
+        if (optionalClub.isPresent()) {
+            clubRepository.delete(optionalClub.get());
+            log.warn("Club: " + clubName + ", in " + city + " has been deleted"  );
+        }else {
+            throw new IllegalStateException("Club not fount");
+        }
+
     }
 }

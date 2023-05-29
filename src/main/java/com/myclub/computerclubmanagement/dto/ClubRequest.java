@@ -9,5 +9,5 @@ import lombok.Data;
 public class ClubRequest {
     private String name;
     private int maxSize;
-    private City city;
+    private String city;
 }
