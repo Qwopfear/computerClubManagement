@@ -8,6 +8,5 @@ import lombok.Data;
 @Builder
 public class GamingEquipmentRequest {
     private Type type;
-    private int costPerHouse;
-    private boolean isAvailable;
+    private int costPerHour;
 }

@@ -9,6 +9,6 @@ import lombok.Data;
 public class GamingEquipmentResponse {
         private Type type;
         private int localNumber;
-        private int costPerHouse;
+        private int costPerHour;
         private boolean isAvailable;
 }

@@ -1,6 +1,5 @@
 package com.myclub.computerclubmanagement.dto;
 
-import com.myclub.computerclubmanagement.model.club.City;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,6 +14,7 @@ public class ClubResponse {
     private Integer currentSize;
     private Integer maxCapacity;
     private Integer currentCapacity;
+    private Integer totalIncome;
     private List<GamingEquipmentResponse> gamingEquipmentResponseList;
 
 }
