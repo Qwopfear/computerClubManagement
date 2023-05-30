@@ -19,13 +19,13 @@ public class ComputerClubManagementApplication {
         SpringApplication.run(ComputerClubManagementApplication.class, args);
     }
 
-    @Bean
-    CommandLineRunner run(CustomerRepository customerRepository, ClubRepository clubRepository, VisitRepository visitRepository) {
-        return args -> {
-            clubRepository.deleteAll();
-            customerRepository.deleteAll();
-            visitRepository.deleteAll();
-        };
-    }
+//    @Bean
+//    CommandLineRunner run(CustomerRepository customerRepository, ClubRepository clubRepository, VisitRepository visitRepository) {
+//        return args -> {
+//            clubRepository.deleteAll();
+//            customerRepository.deleteAll();
+//            visitRepository.deleteAll();
+//        };
+//    }
 
 }
