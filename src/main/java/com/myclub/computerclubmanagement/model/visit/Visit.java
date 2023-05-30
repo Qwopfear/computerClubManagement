@@ -18,5 +18,6 @@ public class Visit {
     private String city;
     private String username;
     private int equLocalNumber;
+    private boolean isActive;
     private int cost;
 }

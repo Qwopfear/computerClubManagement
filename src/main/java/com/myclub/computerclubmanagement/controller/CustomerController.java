@@ -19,6 +19,7 @@ public class CustomerController {
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
     public void createCustomer(@RequestBody CustomerRequest username) {
+
         customerService.createCustomer(username);
     }
 

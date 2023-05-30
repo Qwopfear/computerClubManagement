@@ -14,5 +14,6 @@ public class Customer {
     private Status status;
     private int totalSpendingMoney;
     private int totalSpendingTime;
+    private boolean inClub;
 
 }

@@ -28,9 +28,11 @@ public class VisitService {
         }
         ClubResponse clubResponse = clubService.findByCityAndName(city,clubName);
         CustomerResponse customerResponse = customerService.findByUsername(userName);
+        if (clubResponse.getGamingEquipmentResponseList() == null) throw new IllegalStateException("Club is not available right now");
         GamingEquipmentResponse ger = clubResponse.getGamingEquipmentResponseList().stream()
                 .filter(el -> el.getLocalNumber() == localNumberOfEquipment)
                 .findFirst().orElseThrow();
+        if (customerResponse.isInClub()) throw new IllegalStateException("Customer: " + userName + " already in club" );
         if (!ger.isAvailable()) throw new IllegalStateException("Machine nr " + localNumberOfEquipment + ", is not available right now");
 
         Visit visit = Visit.builder()
@@ -41,6 +43,7 @@ public class VisitService {
                 .duration(duration)
                 .equLocalNumber(localNumberOfEquipment)
                 .cost(ger.getCostPerHour() * duration)
+                .isActive(true)
                 .build();
 
         visitRepository.insert(visit);
@@ -66,6 +69,7 @@ public class VisitService {
                 .city(visit.getCity())
                 .clubName(visit.getClubName())
                 .cost(visit.getCost())
+                .isActive(visit.isActive())
                 .build();
 
     }

@@ -39,6 +39,7 @@ public class CustomerService {
                 .status(Status.SILVER)
                 .totalSpendingMoney(0)
                 .totalSpendingTime(0)
+                .inClub(false)
                 .build();
     }
 
@@ -52,6 +53,7 @@ public class CustomerService {
                 .status(customer.getStatus().name())
                 .totalMoneySpending(customer.getTotalSpendingMoney())
                 .totalTimeSpending(customer.getTotalSpendingTime())
+                .inClub(customer.isInClub())
                 .build();
     }
 
@@ -73,11 +75,22 @@ public class CustomerService {
                 .filter(el -> el.getUsername().equals(customerResponse.getUsername()))
                 .findFirst().orElseThrow();
 
+        customer.setInClub(true);
         customer.setTotalSpendingTime(customer.getTotalSpendingTime() + duration);
         customer.setTotalSpendingMoney(customer.getTotalSpendingMoney()
             + (duration * costPerHour)
         );
+        customerRepository.save(customer);
+    }
 
+
+    protected Customer getCustomerByUsername(String username) {
+        return customerRepository.findAll().stream()
+                .filter(el -> el.getUsername().equals(username))
+                .findAny().orElseThrow();
+    }
+
+    protected void updateCustomer(Customer customer) {
         customerRepository.save(customer);
     }
 }

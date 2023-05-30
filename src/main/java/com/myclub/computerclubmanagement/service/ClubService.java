@@ -102,6 +102,7 @@ public class ClubService {
                 .build();
     }
 
+    @Transactional
     public void delete(String clubName, String city) {
         Optional<Club> optionalClub = clubRepository.findAll().stream()
                 .filter(club -> club.getName().equals(clubName))
@@ -109,6 +110,9 @@ public class ClubService {
                 .findFirst();
 
         if (optionalClub.isPresent()) {
+            for (GamingEquipment g: optionalClub.get().getGamingEquipments()) {
+                equipmentService.delete(g);
+            }
             clubRepository.delete(optionalClub.get());
             log.warn("Club: " + clubName + ", in " + city + " has been deleted"  );
         }else {
@@ -142,7 +146,9 @@ public class ClubService {
                 .findFirst().orElseThrow();
         int sessionIncome = duration * gamingEquipment.getCostPerHour();
         int currentIncome = club.getTotalIncome() == null ? 0 : club.getTotalIncome();
+        equipmentService.updateStatus(gamingEquipment);
         club.setTotalIncome(currentIncome + sessionIncome);
+        System.out.println(club);
         clubRepository.save(club);
 
     }

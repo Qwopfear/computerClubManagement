@@ -10,4 +10,5 @@ public class CustomerResponse {
     private String status;
     private int totalTimeSpending;
     private int totalMoneySpending;
+    private boolean inClub;
 }

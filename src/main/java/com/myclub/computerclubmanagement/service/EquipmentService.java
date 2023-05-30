@@ -6,9 +6,11 @@ import com.myclub.computerclubmanagement.model.club.Club;
 import com.myclub.computerclubmanagement.model.gamingEquipment.GamingEquipment;
 import com.myclub.computerclubmanagement.repository.EquipmentRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class EquipmentService {
@@ -47,4 +49,13 @@ public class EquipmentService {
     }
 
 
+    public void delete(GamingEquipment g) {
+        equipmentRepository.delete(g);
+        log.warn("Gaming eq nr " + g.getLocalNumber() + " in " + g.getClub().getName() + " has been deleted");
+    }
+
+    public void updateStatus(GamingEquipment gamingEquipment) {
+        gamingEquipment.setAvailable(!gamingEquipment.isAvailable());
+        equipmentRepository.save(gamingEquipment);
+    }
 }
